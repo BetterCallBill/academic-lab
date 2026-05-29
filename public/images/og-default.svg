@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#1e3a5f"/>
+  <!-- Background pattern -->
+  <circle cx="900" cy="100" r="300" fill="#2d5186" opacity="0.4"/>
+  <circle cx="200" cy="500" r="250" fill="#0d9488" opacity="0.2"/>
+  <!-- Hexagon decorations -->
+  <polygon points="1050,200 1100,228 1100,285 1050,313 1000,285 1000,228" fill="none" stroke="#0d9488" stroke-width="2" opacity="0.6"/>
+  <polygon points="150,350 200,378 200,435 150,463 100,435 100,378" fill="none" stroke="#14b8a6" stroke-width="2" opacity="0.4"/>
+  <!-- Lab name -->
+  <text x="100" y="270" font-family="Inter, system-ui, sans-serif" font-size="72" font-weight="700" fill="white">Chen Lab</text>
+  <text x="100" y="340" font-family="Inter, system-ui, sans-serif" font-size="32" font-weight="400" fill="#14b8a6">Nanomaterials &amp; Self-Assembly</text>
+  <text x="100" y="390" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="400" fill="#94a3b8">Department of Chemistry · Westfield University</text>
+</svg>
