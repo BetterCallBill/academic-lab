@@ -1,0 +1,102 @@
+---
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'Research', href: '/research' },
+  { label: 'Publications', href: '/publications' },
+  { label: 'Team', href: '/team' },
+  { label: 'News', href: '/news' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const pathname = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? pathname === '/' : pathname.startsWith(href);
+---
+
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-100 shadow-sm">
+  <nav
+    class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"
+    x-data="{ open: false }"
+  >
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2 shrink-0">
+      <span class="text-navy font-bold text-xl tracking-tight">Chen Lab</span>
+      <span class="hidden sm:inline text-xs text-slate-400 font-normal border-l border-slate-200 pl-2">
+        Nanomaterials & Self-Assembly
+      </span>
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden md:flex items-center gap-1">
+      {navLinks.map(({ label, href }) => (
+        <li>
+          <a
+            href={href}
+            class={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150 ${
+              isActive(href)
+                ? 'text-teal bg-teal/10'
+                : 'text-slate-600 hover:text-navy hover:bg-slate-50'
+            }`}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Mobile hamburger -->
+    <button
+      class="md:hidden p-2 rounded-md text-slate-500 hover:text-navy hover:bg-slate-50 transition-colors"
+      x-on:click="open = !open"
+      aria-label="Toggle menu"
+    >
+      <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+      <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div
+    x-show="open"
+    x-transition:enter="transition ease-out duration-150"
+    x-transition:enter-start="opacity-0 -translate-y-2"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-100"
+    x-transition:leave-start="opacity-100 translate-y-0"
+    x-transition:leave-end="opacity-0 -translate-y-2"
+    class="md:hidden border-t border-slate-100 bg-white"
+  >
+    <ul class="px-4 py-3 space-y-1">
+      {navLinks.map(({ label, href }) => (
+        <li>
+          <a
+            href={href}
+            class={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              isActive(href)
+                ? 'text-teal bg-teal/10'
+                : 'text-slate-600 hover:text-navy hover:bg-slate-50'
+            }`}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<script>
+  // Close mobile menu on navigation
+  document.querySelectorAll('header nav ul a').forEach(link => {
+    link.addEventListener('click', () => {
+      const nav = document.querySelector('[x-data]') as any;
+      if (nav && nav._x_dataStack) {
+        nav._x_dataStack[0].open = false;
+      }
+    });
+  });
+</script>

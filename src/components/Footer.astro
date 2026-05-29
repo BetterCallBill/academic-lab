@@ -1,0 +1,70 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-navy text-white mt-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Lab info -->
+      <div>
+        <h3 class="text-lg font-bold mb-3">Chen Lab</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">
+          Nanomaterials & Self-Assembly<br />
+          Department of Chemistry<br />
+          Westfield University
+        </p>
+        <p class="text-slate-400 text-sm mt-3">
+          Westfield Science Building, Room 402<br />
+          1200 University Avenue<br />
+          Westfield, CA 94720
+        </p>
+      </div>
+
+      <!-- Quick links -->
+      <div>
+        <h3 class="text-lg font-bold mb-3">Quick Links</h3>
+        <ul class="space-y-2 text-sm">
+          {[
+            ['Research', '/research'],
+            ['Publications', '/publications'],
+            ['Team', '/team'],
+            ['News', '/news'],
+            ['Contact & Joining', '/contact'],
+          ].map(([label, href]) => (
+            <li>
+              <a href={href} class="text-slate-300 hover:text-teal-light transition-colors">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h3 class="text-lg font-bold mb-3">Contact</h3>
+        <ul class="space-y-2 text-sm text-slate-300">
+          <li>
+            <a href="mailto:mei.chen@westfield.edu" class="hover:text-teal-light transition-colors">
+              mei.chen@westfield.edu
+            </a>
+          </li>
+          <li>
+            <a href="https://scholar.google.com" target="_blank" rel="noopener noreferrer" class="hover:text-teal-light transition-colors">
+              Google Scholar
+            </a>
+          </li>
+          <li>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="hover:text-teal-light transition-colors">
+              Twitter / X
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 pt-6 border-t border-navy-light text-center text-slate-400 text-sm">
+      &copy; {year} Chen Lab, Westfield University. All rights reserved.
+    </div>
+  </div>
+</footer>
