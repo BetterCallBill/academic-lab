@@ -13,10 +13,10 @@ interface Props {
 const { title, authors, journal, year, doi, pdf, tags, featured } = Astro.props;
 
 const formattedAuthors = authors.map((author, i) => {
-  const isChen = author === 'Mei Chen';
+  const isPI = author === 'Yanan Huang';
   const isLast = i === authors.length - 1;
   const separator = isLast ? '' : i === authors.length - 2 ? ', and ' : ', ';
-  return { name: author, isChen, separator };
+  return { name: author, isPI, separator };
 });
 ---
 
@@ -35,9 +35,9 @@ const formattedAuthors = authors.map((author, i) => {
 
   <!-- Authors -->
   <p class="text-sm text-slate-500 mb-1">
-    {formattedAuthors.map(({ name, isChen, separator }) => (
+    {formattedAuthors.map(({ name, isPI, separator }) => (
       <span>
-        <span class={isChen ? 'font-semibold text-slate-700' : ''}>{name}</span>
+        <span class={isPI ? 'font-semibold text-slate-700' : ''}>{name}</span>
         {separator}
       </span>
     ))}

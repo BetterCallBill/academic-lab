@@ -4,7 +4,7 @@ role: "Postdoctoral Researcher"
 category: "postdoc"
 photo: "https://ui-avatars.com/api/?name=James+Okafor&size=240&background=0d9488&color=fff&bold=true"
 email: "j.okafor@westfield.edu"
-bio: "James received his Ph.D. from the University of Cambridge (2022) working on anisotropic gold nanorod synthesis. He joined the Chen Lab in 2023 and is developing novel plasmonic nanostructures for point-of-care diagnostics."
+bio: "James received his Ph.D. from the University of Cambridge (2022) working on anisotropic gold nanorod synthesis. He joined the Yanan Lab in 2023 and is developing novel plasmonic nanostructures for point-of-care diagnostics."
 interests: ["Gold Nanorods", "Plasmonic Sensors", "Point-of-Care Diagnostics"]
 links:
   scholar: "https://scholar.google.com"
