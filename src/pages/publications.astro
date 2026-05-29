@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PublicationItem from '../components/PublicationItem.astro';
+import { getCollection } from 'astro:content';
+
+const allPubs = (await getCollection('publications')).sort(
+  (a, b) => b.data.year - a.data.year
+);
+
+const years = [...new Set(allPubs.map(p => p.data.year))].sort((a, b) => b - a);
+const allTags = [...new Set(allPubs.flatMap(p => p.data.tags))].sort();
+---
+
+<BaseLayout
+  title="Publications"
+  description="Full publication list from the Chen Lab — nanomaterials, plasmonic biosensors, drug delivery, and self-assembly research at Westfield University."
+>
+  <!-- Page header -->
+  <section class="bg-slate-50 border-b border-slate-100 py-14">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="section-heading text-4xl">Publications</h1>
+      <p class="text-slate-500 max-w-2xl">
+        {allPubs.length} publications · <strong class="text-slate-700">Mei Chen</strong> is shown in bold. Filter by year or topic below.
+      </p>
+    </div>
+  </section>
+
+  <div
+    class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+    x-data={`{
+      activeYear: 'all',
+      activeTags: [],
+      showFeaturedOnly: false,
+      isVisible(year, tags, featured) {
+        const yearOk = this.activeYear === 'all' || year === parseInt(this.activeYear);
+        const tagOk = this.activeTags.length === 0 || this.activeTags.some(t => tags.split(',').includes(t));
+        const featOk = !this.showFeaturedOnly || featured === 'true';
+        return yearOk && tagOk && featOk;
+      },
+      toggleTag(tag) {
+        if (this.activeTags.includes(tag)) {
+          this.activeTags = this.activeTags.filter(t => t !== tag);
+        } else {
+          this.activeTags.push(tag);
+        }
+      }
+    }`}
+  >
+    <!-- Filter bar -->
+    <div class="bg-white rounded-xl border border-slate-100 p-5 mb-8 space-y-4">
+      <!-- Year filter -->
+      <div>
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Year</p>
+        <div class="flex flex-wrap gap-2">
+          <button
+            x-on:click="activeYear = 'all'"
+            x-bind:class="activeYear === 'all' ? 'bg-navy text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'"
+            class="px-3 py-1 rounded-full text-sm font-medium transition-colors"
+          >
+            All
+          </button>
+          {years.map(year => (
+            <button
+              x-on:click={`activeYear = activeYear === '${year}' ? 'all' : '${year}'`}
+              x-bind:class={`activeYear === '${year}' ? 'bg-navy text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'`}
+              class="px-3 py-1 rounded-full text-sm font-medium transition-colors"
+            >
+              {year}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Tag filter -->
+      <div>
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Topic</p>
+        <div class="flex flex-wrap gap-2">
+          {allTags.map(tag => (
+            <button
+              x-on:click={`toggleTag('${tag}')`}
+              x-bind:class={`activeTags.includes('${tag}') ? 'bg-teal text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'`}
+              class="px-3 py-1 rounded-full text-sm font-medium transition-colors capitalize"
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Featured toggle -->
+      <div class="flex items-center gap-3">
+        <button
+          x-on:click="showFeaturedOnly = !showFeaturedOnly"
+          x-bind:class="showFeaturedOnly ? 'bg-amber-100 text-amber-700 border-amber-200' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border-transparent'"
+          class="px-3 py-1 rounded-full text-sm font-medium transition-colors border"
+        >
+          ★ Featured only
+        </button>
+        <button
+          x-show="activeYear !== 'all' || activeTags.length > 0 || showFeaturedOnly"
+          x-on:click="activeYear = 'all'; activeTags = []; showFeaturedOnly = false"
+          class="text-sm text-slate-400 hover:text-slate-600 transition-colors"
+        >
+          Clear filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Publication list grouped by year -->
+    {years.map(year => (
+      <div x-show={`[...document.querySelectorAll('[data-year="${year}"]')].some(el => isVisible(parseInt(el.dataset.year), el.dataset.tags, el.dataset.featured))`}>
+        <h2 class="text-xl font-bold text-navy mb-4 mt-8">{year}</h2>
+        <div class="space-y-3">
+          {allPubs
+            .filter(p => p.data.year === year)
+            .map(pub => (
+              <div
+                x-show={`isVisible(${pub.data.year}, '${pub.data.tags.join(',')}', '${pub.data.featured}')`}
+                data-year={pub.data.year}
+                data-tags={pub.data.tags.join(',')}
+                data-featured={String(pub.data.featured)}
+              >
+                <PublicationItem
+                  title={pub.data.title}
+                  authors={pub.data.authors}
+                  journal={pub.data.journal}
+                  year={pub.data.year}
+                  doi={pub.data.doi}
+                  pdf={pub.data.pdf}
+                  tags={pub.data.tags}
+                  featured={pub.data.featured}
+                />
+              </div>
+            ))}
+        </div>
+      </div>
+    ))}
+
+    <!-- Empty state -->
+    <p
+      x-show={`[...document.querySelectorAll('[data-year]')].every(el => !isVisible(parseInt(el.dataset.year), el.dataset.tags, el.dataset.featured))`}
+      class="text-center text-slate-400 py-12"
+    >
+      No publications match the selected filters.
+    </p>
+  </div>
+</BaseLayout>

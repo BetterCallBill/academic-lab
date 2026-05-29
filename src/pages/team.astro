@@ -1,0 +1,235 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MemberCard from '../components/MemberCard.astro';
+import { getCollection } from 'astro:content';
+
+const allMembers = (await getCollection('team')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const pi = allMembers.filter(m => m.data.category === 'pi');
+const postdocs = allMembers.filter(m => m.data.category === 'postdoc');
+const phds = allMembers.filter(m => m.data.category === 'phd');
+const masters = allMembers.filter(m => m.data.category === 'master');
+const undergrads = allMembers.filter(m => m.data.category === 'undergrad');
+const alumni = allMembers.filter(m => m.data.category === 'alumni');
+---
+
+<BaseLayout
+  title="Team"
+  description="Meet the Chen Lab — a diverse group of researchers working on nanomaterials, plasmonic biosensors, and drug delivery systems at Westfield University."
+>
+  <!-- Page header -->
+  <section class="bg-slate-50 border-b border-slate-100 py-14">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="section-heading text-4xl">Our Team</h1>
+      <p class="text-slate-500 max-w-2xl">
+        The Chen Lab is a collaborative and inclusive group of scientists from diverse backgrounds. We celebrate curiosity, rigor, and creativity.
+      </p>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+    <!-- PI -->
+    {pi.map(async member => {
+      const { Content } = await member.render();
+      return (
+        <section>
+          <h2 class="text-2xl font-bold text-navy mb-6 pb-2 border-b border-slate-100">
+            Principal Investigator
+          </h2>
+          <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="flex flex-col sm:flex-row gap-8 p-8">
+              <div class="shrink-0 flex flex-col items-center sm:items-start">
+                <img
+                  src={member.data.photo}
+                  alt={member.data.name}
+                  width="160"
+                  height="160"
+                  class="w-40 h-40 rounded-full ring-4 ring-teal/20 object-cover mb-4"
+                />
+                <!-- Links -->
+                <div class="flex gap-3">
+                  {member.data.email && (
+                    <a href={`mailto:${member.data.email}`} title="Email" class="text-slate-400 hover:text-teal transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                      </svg>
+                    </a>
+                  )}
+                  {member.data.links?.scholar && (
+                    <a href={member.data.links.scholar} target="_blank" rel="noopener noreferrer" title="Google Scholar" class="text-slate-400 hover:text-teal transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 24a7 7 0 110-14 7 7 0 010 14zm0-24L0 9.5l4.838 3.94A8 8 0 0112 9a8 8 0 017.162 4.44L24 9.5z"/>
+                      </svg>
+                    </a>
+                  )}
+                  {member.data.links?.twitter && (
+                    <a href={member.data.links.twitter} target="_blank" rel="noopener noreferrer" title="Twitter" class="text-slate-400 hover:text-teal transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                      </svg>
+                    </a>
+                  )}
+                  {member.data.links?.website && (
+                    <a href={member.data.links.website} target="_blank" rel="noopener noreferrer" title="Website" class="text-slate-400 hover:text-teal transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16A8 8 0 0010 2zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clip-rule="evenodd" />
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-2xl font-bold text-navy mb-1">{member.data.name}</h3>
+                <p class="text-teal font-medium mb-1">{member.data.role}</p>
+                <p class="text-slate-400 text-sm mb-4">Department of Chemistry, Westfield University</p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                  {member.data.interests.map(interest => (
+                    <span class="tag bg-teal/10 text-teal text-xs">{interest}</span>
+                  ))}
+                </div>
+                <div class="prose prose-sm text-slate-600 max-w-none">
+                  <Content />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    })}
+
+    <!-- Postdocs -->
+    {postdocs.length > 0 && (
+      <section>
+        <h2 class="text-2xl font-bold text-navy mb-6 pb-2 border-b border-slate-100">
+          Postdoctoral Researchers
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {postdocs.map(m => (
+            <MemberCard
+              name={m.data.name}
+              role={m.data.role}
+              category={m.data.category}
+              photo={m.data.photo}
+              email={m.data.email}
+              bio={m.data.bio}
+              interests={m.data.interests}
+              links={m.data.links}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- PhD students -->
+    {phds.length > 0 && (
+      <section>
+        <h2 class="text-2xl font-bold text-navy mb-6 pb-2 border-b border-slate-100">
+          Ph.D. Students
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {phds.map(m => (
+            <MemberCard
+              name={m.data.name}
+              role={m.data.role}
+              category={m.data.category}
+              photo={m.data.photo}
+              email={m.data.email}
+              bio={m.data.bio}
+              interests={m.data.interests}
+              links={m.data.links}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Master's students -->
+    {masters.length > 0 && (
+      <section>
+        <h2 class="text-2xl font-bold text-navy mb-6 pb-2 border-b border-slate-100">
+          Master's Students
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {masters.map(m => (
+            <MemberCard
+              name={m.data.name}
+              role={m.data.role}
+              category={m.data.category}
+              photo={m.data.photo}
+              email={m.data.email}
+              bio={m.data.bio}
+              interests={m.data.interests}
+              links={m.data.links}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Undergrads -->
+    {undergrads.length > 0 && (
+      <section>
+        <h2 class="text-2xl font-bold text-navy mb-6 pb-2 border-b border-slate-100">
+          Undergraduate Researchers
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {undergrads.map(m => (
+            <MemberCard
+              name={m.data.name}
+              role={m.data.role}
+              category={m.data.category}
+              photo={m.data.photo}
+              email={m.data.email}
+              bio={m.data.bio}
+              interests={m.data.interests}
+              links={m.data.links}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Alumni -->
+    {alumni.length > 0 && (
+      <section>
+        <h2 class="text-2xl font-bold text-navy mb-6 pb-2 border-b border-slate-100">
+          Alumni
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-200">
+                <th class="text-left py-3 px-4 text-slate-500 font-medium">Name</th>
+                <th class="text-left py-3 px-4 text-slate-500 font-medium">Degree</th>
+                <th class="text-left py-3 px-4 text-slate-500 font-medium">Year</th>
+                <th class="text-left py-3 px-4 text-slate-500 font-medium">Current Position</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              {alumni.map(m => (
+                <tr class="hover:bg-slate-50 transition-colors">
+                  <td class="py-3 px-4 font-medium text-navy">{m.data.name}</td>
+                  <td class="py-3 px-4 text-slate-600">{m.data.alumniInfo?.degree ?? '—'}</td>
+                  <td class="py-3 px-4 text-slate-600">{m.data.alumniInfo?.year ?? '—'}</td>
+                  <td class="py-3 px-4 text-slate-600">{m.data.alumniInfo?.currentPosition ?? '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )}
+
+    <!-- Join us -->
+    <section class="bg-navy/5 border border-navy/10 rounded-2xl p-8 text-center">
+      <h2 class="text-2xl font-bold text-navy mb-3">Join the Chen Lab</h2>
+      <p class="text-slate-500 mb-6 max-w-xl mx-auto">
+        We are always looking for enthusiastic PhD students, postdocs, and undergrads. If you are passionate about nanoscience, reach out!
+      </p>
+      <a href="/contact" class="btn-primary">View Open Positions</a>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const researchAreas = (await getCollection('research')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const techniques = [
+  { name: 'Electron Microscopy', detail: 'TEM, HAADF-STEM, EELS at the Westfield Materials Imaging Facility' },
+  { name: 'Optical Spectroscopy', detail: 'UV-Vis-NIR, SERS, confocal Raman, single-particle spectroscopy' },
+  { name: 'X-Ray Scattering', detail: 'SAXS (synchrotron), XRD for nanocrystal phase identification' },
+  { name: 'Dynamic Light Scattering', detail: 'Particle size distribution and zeta potential via Malvern Zetasizer' },
+  { name: 'AFM / STM', detail: 'Surface morphology and assembly characterization at the nanoscale' },
+  { name: 'Cell Biology', detail: 'Confocal fluorescence microscopy, flow cytometry, 3D tumor spheroids' },
+];
+---
+
+<BaseLayout
+  title="Research"
+  description="Research areas of the Chen Lab: programmable nanostructures, nanomedicine, plasmonic biosensors, and functional self-assembly at Westfield University."
+>
+  <!-- Page header -->
+  <section class="bg-slate-50 border-b border-slate-100 py-14">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="section-heading text-4xl">Research</h1>
+      <p class="text-slate-500 max-w-2xl">
+        Our lab pursues four interconnected research directions united by a common thread: using chemistry to engineer nanoparticles with programmable properties for real-world applications.
+      </p>
+    </div>
+  </section>
+
+  <!-- Research areas -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+    {researchAreas.map(async (area, i) => {
+      const { Content } = await area.render();
+      return (
+        <section id={area.slug} class="scroll-mt-20">
+          <div class={`grid grid-cols-1 lg:grid-cols-2 gap-10 items-start ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
+            <div>
+              <div class="text-5xl mb-4">{area.data.icon}</div>
+              <h2 class="text-2xl font-bold text-navy mb-4">{area.data.title}</h2>
+              <div class="prose prose-slate text-slate-600 max-w-none">
+                <Content />
+              </div>
+            </div>
+            <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100">
+              <p class="text-sm font-semibold text-navy uppercase tracking-wide mb-4">Key Questions</p>
+              <ul class="space-y-3 text-slate-600 text-sm">
+                {area.data.title === 'Programmable Nanostructures' && [
+                  'How can we predict and control crystal growth pathways to access new nanoparticle shapes?',
+                  'What is the quantitative relationship between particle geometry and plasmonic response?',
+                  'Can machine learning accelerate the discovery of novel nanostructure morphologies?',
+                ].map(q => <li class="flex gap-2"><span class="text-teal shrink-0">▸</span>{q}</li>)}
+                {area.data.title === 'Nanomedicine & Drug Delivery' && [
+                  'How do we achieve tumor-selective accumulation without targeting ligands?',
+                  'Can photothermal and chemotherapy synergies overcome multidrug resistance?',
+                  'What nanocarrier properties govern siRNA endosomal escape efficiency?',
+                ].map(q => <li class="flex gap-2"><span class="text-teal shrink-0">▸</span>{q}</li>)}
+                {area.data.title === 'Plasmonic Biosensors' && [
+                  'Can we detect single disease biomarker molecules in unprocessed clinical samples?',
+                  'How do we multiplex SERS signals from complex biological mixtures?',
+                  'What is the fundamental sensitivity limit of LSPR-shift assays?',
+                ].map(q => <li class="flex gap-2"><span class="text-teal shrink-0">▸</span>{q}</li>)}
+                {area.data.title === 'Functional Self-Assembly' && [
+                  'What are the minimal design rules for DNA-directed 3D nanoparticle assemblies?',
+                  'Can amphiphilic nanoparticles mimic lipid monolayers at interfaces?',
+                  'How do we scale colloidal crystal assembly from cm² to m² for device integration?',
+                ].map(q => <li class="flex gap-2"><span class="text-teal shrink-0">▸</span>{q}</li>)}
+              </ul>
+            </div>
+          </div>
+        </section>
+      );
+    })}
+
+    <!-- Techniques -->
+    <section>
+      <h2 class="text-2xl font-bold text-navy mb-6 pb-2 border-b border-slate-100">
+        Characterization & Techniques
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {techniques.map(({ name, detail }) => (
+          <div class="bg-white rounded-xl border border-slate-100 p-5 hover:border-teal/40 hover:shadow-sm transition-all duration-200">
+            <h3 class="font-semibold text-navy text-sm mb-1">{name}</h3>
+            <p class="text-slate-500 text-xs leading-relaxed">{detail}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

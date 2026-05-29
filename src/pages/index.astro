@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResearchCard from '../components/ResearchCard.astro';
+import PublicationItem from '../components/PublicationItem.astro';
+import NewsCard from '../components/NewsCard.astro';
+import { getCollection } from 'astro:content';
+
+const researchAreas = (await getCollection('research')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const allPublications = await getCollection('publications');
+const featuredPublications = allPublications
+  .filter(p => p.data.featured)
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 3);
+
+const allNews = await getCollection('news');
+const latestNews = allNews
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="Home"
+  description="Chen Lab for Nanomaterials & Self-Assembly at Westfield University. We engineer programmable nanostructures for biosensing, drug delivery, and optical applications."
+>
+  <!-- Hero -->
+  <section class="relative bg-gradient-to-br from-navy to-navy-light text-white overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-teal rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-80 h-80 bg-teal-light rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
+    </div>
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+      <div class="max-w-3xl">
+        <p class="text-teal-light font-medium text-sm tracking-wider uppercase mb-4">
+          Department of Chemistry · Westfield University
+        </p>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+          Chen Lab for<br />
+          <span class="text-teal-light">Nanomaterials</span><br />
+          & Self-Assembly
+        </h1>
+        <p class="text-slate-300 text-lg leading-relaxed mb-8 max-w-2xl">
+          We engineer programmable nanostructures with precisely controlled optical, chemical, and biological properties — advancing diagnostics, drug delivery, and functional materials.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="/research" class="btn-primary">Explore Research</a>
+          <a href="/team" class="btn-outline">Meet the Team</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats strip -->
+  <section class="bg-slate-50 border-y border-slate-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <dl class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+        {[
+          ['12+', 'Publications (2021–2024)'],
+          ['$6M+', 'Research Funding'],
+          ['10', 'Lab Members'],
+          ['4', 'Research Areas'],
+        ].map(([stat, label]) => (
+          <div>
+            <dt class="text-3xl font-bold text-navy">{stat}</dt>
+            <dd class="text-sm text-slate-500 mt-1">{label}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <!-- Research highlights -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="text-center mb-12">
+      <h2 class="section-heading">Research Areas</h2>
+      <p class="section-subheading">Four interconnected directions in nanoscience</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {researchAreas.map(area => (
+        <ResearchCard
+          title={area.data.title}
+          icon={area.data.icon}
+          description={area.body.slice(0, 140).trim() + '…'}
+        />
+      ))}
+    </div>
+    <div class="text-center mt-8">
+      <a href="/research" class="btn-primary">View All Research →</a>
+    </div>
+  </section>
+
+  <!-- Lab photo strip -->
+  <section class="relative h-72 sm:h-96 overflow-hidden">
+    <img
+      src="https://images.unsplash.com/photo-1581093458791-9d42a7aa2b82?w=1600&q=80"
+      alt="Chen Lab researchers at work"
+      class="w-full h-full object-cover"
+      loading="lazy"
+    />
+    <div class="absolute inset-0 bg-navy/60 flex items-center justify-center text-white text-center px-4">
+      <div>
+        <p class="text-teal-light text-sm font-medium uppercase tracking-widest mb-2">Our Lab</p>
+        <h2 class="text-2xl sm:text-3xl font-bold max-w-lg">
+          Curiosity-driven science at the nanoscale
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured publications -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="flex items-end justify-between mb-10">
+      <div>
+        <h2 class="section-heading">Featured Publications</h2>
+        <p class="section-subheading mb-0">Selected recent work from the lab</p>
+      </div>
+      <a href="/publications" class="text-sm font-medium text-teal hover:text-teal-dark transition-colors shrink-0 ml-4">
+        All publications →
+      </a>
+    </div>
+    <div class="space-y-4">
+      {featuredPublications.map(pub => (
+        <PublicationItem
+          title={pub.data.title}
+          authors={pub.data.authors}
+          journal={pub.data.journal}
+          year={pub.data.year}
+          doi={pub.data.doi}
+          pdf={pub.data.pdf}
+          tags={pub.data.tags}
+          featured={pub.data.featured}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- Latest news -->
+  <section class="bg-slate-50 border-t border-slate-100">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <h2 class="section-heading">Latest News</h2>
+          <p class="section-subheading mb-0">Updates from the Chen Lab</p>
+        </div>
+        <a href="/news" class="text-sm font-medium text-teal hover:text-teal-dark transition-colors shrink-0 ml-4">
+          All news →
+        </a>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {latestNews.map(item => (
+          <NewsCard
+            title={item.data.title}
+            date={item.data.date}
+            category={item.data.category}
+            image={item.data.image}
+            excerpt={item.data.excerpt}
+            slug={item.slug}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Join us CTA -->
+  <section class="bg-navy text-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+      <h2 class="text-3xl font-bold mb-4">Join the Chen Lab</h2>
+      <p class="text-slate-300 mb-8 max-w-xl mx-auto">
+        We welcome motivated PhD students, postdoctoral researchers, and undergraduates passionate about nanoscience.
+      </p>
+      <a href="/contact" class="btn-primary">Learn More & Apply</a>
+    </div>
+  </section>
+</BaseLayout>

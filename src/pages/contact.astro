@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const openPositions = [
+  {
+    role: 'Postdoctoral Researcher',
+    description: 'We are seeking a postdoc with expertise in colloidal synthesis, electron microscopy, or bioanalytical chemistry. The position is fully funded for 2 years with renewal.',
+    requirements: ['Ph.D. in Chemistry, Materials Science, or related field', 'Strong publication record', 'Experience with TEM/STEM or optical spectroscopy'],
+  },
+  {
+    role: 'Ph.D. Student (Fall 2025)',
+    description: 'Multiple funded Ph.D. positions are available for the Fall 2025 cohort. Applicants should apply through the Westfield Department of Chemistry graduate program.',
+    requirements: ['B.S. or M.S. in Chemistry, Physics, or related field', 'GPA ≥ 3.5', 'GRE optional'],
+  },
+  {
+    role: 'Undergraduate Researcher',
+    description: 'We welcome motivated undergraduates (sophomore+) who can commit at least 8 hours/week to lab work. Credit or hourly pay available.',
+    requirements: ['Completed Chem 101 and 102', 'Commitment of ≥ 8 hr/week', 'Interest in materials chemistry or nanoscience'],
+  },
+];
+---
+
+<BaseLayout
+  title="Contact"
+  description="Contact the Chen Lab at Westfield University. Office location, email, and information about joining the group."
+>
+  <!-- Page header -->
+  <section class="bg-slate-50 border-b border-slate-100 py-14">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="section-heading text-4xl">Contact</h1>
+      <p class="text-slate-500 max-w-2xl">
+        We are always interested in hearing from motivated scientists. Find us in the Westfield Science Building or reach out by email.
+      </p>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <!-- Contact info -->
+      <div class="space-y-8">
+        <div>
+          <h2 class="text-xl font-bold text-navy mb-4">Lab Location</h2>
+          <div class="bg-white rounded-xl border border-slate-100 p-6 space-y-3 text-slate-600">
+            <p class="font-semibold text-navy">Prof. Mei Chen</p>
+            <p>Department of Chemistry<br />Westfield University</p>
+            <p>Westfield Science Building, Room 402<br />1200 University Avenue<br />Westfield, CA 94720</p>
+            <p>
+              <a href="mailto:mei.chen@westfield.edu" class="text-teal hover:text-teal-dark font-medium transition-colors">
+                mei.chen@westfield.edu
+              </a>
+            </p>
+            <p>Tel: +1 (555) 867-5309</p>
+          </div>
+        </div>
+
+        <!-- Map placeholder -->
+        <div>
+          <h2 class="text-xl font-bold text-navy mb-4">Getting Here</h2>
+          <div class="bg-slate-100 rounded-xl overflow-hidden h-56 flex items-center justify-center">
+            <div class="text-center text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <p class="text-sm">Map placeholder<br />(embed Google Maps here)</p>
+            </div>
+          </div>
+          <p class="text-sm text-slate-500 mt-2">
+            The Science Building is a 10-minute walk from the main campus bus stop on University Ave.
+            Visitor parking available in Lot C (permit required after 5pm).
+          </p>
+        </div>
+      </div>
+
+      <!-- Open positions -->
+      <div>
+        <h2 class="text-xl font-bold text-navy mb-6">Open Positions</h2>
+        <div class="space-y-6">
+          {openPositions.map(pos => (
+            <div class="bg-white rounded-xl border border-slate-100 p-6 hover:border-teal/40 hover:shadow-sm transition-all duration-200">
+              <div class="flex items-start justify-between mb-3">
+                <h3 class="font-bold text-navy">{pos.role}</h3>
+                <span class="tag bg-teal/10 text-teal text-xs ml-2 shrink-0">Open</span>
+              </div>
+              <p class="text-slate-600 text-sm leading-relaxed mb-3">{pos.description}</p>
+              <ul class="space-y-1">
+                {pos.requirements.map(req => (
+                  <li class="text-sm text-slate-500 flex gap-2">
+                    <span class="text-teal shrink-0">✓</span>
+                    {req}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-8 bg-navy/5 border border-navy/10 rounded-xl p-6">
+          <h3 class="font-bold text-navy mb-2">How to Apply</h3>
+          <p class="text-slate-600 text-sm leading-relaxed mb-4">
+            Send an email to Prof. Chen with the subject line <strong>"[Position] Application — Your Name"</strong>.
+            Include your CV, a brief statement of research interests (≤ 1 page), and contact information for 2–3 references.
+          </p>
+          <a
+            href="mailto:mei.chen@westfield.edu?subject=Application — "
+            class="btn-primary text-sm"
+          >
+            Email Prof. Chen
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
