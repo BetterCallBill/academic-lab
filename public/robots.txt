@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://chenlab.pages.dev/sitemap.xml
+Sitemap: https://academic-lab.pages.dev/sitemap.xml

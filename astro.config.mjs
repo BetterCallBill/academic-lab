@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  site: 'https://chenlab.pages.dev',
+  site: 'https://academic-lab.pages.dev',
   integrations: [tailwind()],
   output: 'static',
 });
