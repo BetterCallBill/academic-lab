@@ -24,6 +24,12 @@ const { title, description, image, canonical } = Astro.props;
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <!-- Hide Alpine-controlled elements until Alpine initializes -->
+    <style is:global>
+      [x-cloak] {
+        display: none !important;
+      }
+    </style>
     <!-- Alpine.js -->
     <script is:inline defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   </head>

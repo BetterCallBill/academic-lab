@@ -15,7 +15,7 @@ const isActive = (href: string) =>
 
 <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-100 shadow-sm">
   <nav
-    class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"
+    class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16"
     x-data="{ open: false }"
   >
     <!-- Logo -->
@@ -47,7 +47,7 @@ const isActive = (href: string) =>
     <!-- Mobile hamburger -->
     <button
       class="md:hidden p-2 rounded-md text-slate-500 hover:text-navy hover:bg-slate-50 transition-colors"
-      x-on:click="open = !open"
+      @click="open = !open"
       aria-label="Toggle menu"
     >
       <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,36 +57,37 @@ const isActive = (href: string) =>
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
-  </nav>
 
-  <!-- Mobile menu -->
-  <div
-    x-show="open"
-    x-transition:enter="transition ease-out duration-150"
-    x-transition:enter-start="opacity-0 -translate-y-2"
-    x-transition:enter-end="opacity-100 translate-y-0"
-    x-transition:leave="transition ease-in duration-100"
-    x-transition:leave-start="opacity-100 translate-y-0"
-    x-transition:leave-end="opacity-0 -translate-y-2"
-    class="md:hidden border-t border-slate-100 bg-white"
-  >
-    <ul class="px-4 py-3 space-y-1">
-      {navLinks.map(({ label, href }) => (
-        <li>
-          <a
-            href={href}
-            class={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-              isActive(href)
-                ? 'text-teal bg-teal/10'
-                : 'text-slate-600 hover:text-navy hover:bg-slate-50'
-            }`}
-          >
-            {label}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
+    <!-- Mobile menu -->
+    <div
+      x-cloak
+      x-show="open"
+      x-transition:enter="transition ease-out duration-150"
+      x-transition:enter-start="opacity-0 -translate-y-2"
+      x-transition:enter-end="opacity-100 translate-y-0"
+      x-transition:leave="transition ease-in duration-100"
+      x-transition:leave-start="opacity-100 translate-y-0"
+      x-transition:leave-end="opacity-0 -translate-y-2"
+      class="md:hidden absolute top-full left-0 right-0 border-t border-slate-100 bg-white"
+    >
+      <ul class="px-4 py-3 space-y-1">
+        {navLinks.map(({ label, href }) => (
+          <li>
+            <a
+              href={href}
+              class={`block px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                isActive(href)
+                  ? 'text-teal bg-teal/10'
+                  : 'text-slate-600 hover:text-navy hover:bg-slate-50'
+              }`}
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
 </header>
 
 <script>
